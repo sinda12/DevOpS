@@ -5,6 +5,11 @@ package com.bookstore.bookstore.controller;
 
 import java.util.List;
 
+import com.bookstore.bookstore.model.Employee;
+import com.bookstore.bookstore.repository.EmployeeRepository;
+import com.bookstore.bookstore.service.EmployeeService;
+
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,40 +22,38 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bookstore.bookstore.model.Profile;
-import com.bookstore.bookstore.repository.UserRepository;
-import com.bookstore.bookstore.service.UserService;
 
 
 
 @RestController
-public class UserController {
+public class EmployeeController {
+
 	@Autowired
-	private UserService userService ;
+	private EmployeeService userService ;
 	@Autowired
-	private UserRepository userR;
+	private EmployeeRepository userR;
 	
 	@GetMapping("list-user")
-	public List<Profile> listTasks() {
+	public List<Employee> listTasks() {
+
 		return userR.findAll();
-			
-		
 	}
 	
 	
 	@PostMapping("edit-user")
-	public String editTasks(Model model , Profile user) {
+	public String editTasks(Model model , Employee user) {
 		userService.save(user);
-		return "save sucess";
+
+		return "save success";
+
 	}
 	@PutMapping(value="edit-user/{id}") 
-	public String editUser(@PathVariable Long id, @RequestBody Profile user) {
-	Profile updatedUser= userService.findOne(id).get();
+	public String editUser(@PathVariable Long id, @RequestBody Employee user) {
+		Employee updatedUser= userService.findOne(id).get();
 	updatedUser.setEmail(user.getEmail());
-	updatedUser.setName(user.getName());
-	updatedUser.setPassword(user.getPassword());
-	updatedUser.setLast_name(user.getLast_name());
-	updatedUser.setTel(user.getTel());
+	updatedUser.setNom(user.getNom());
+	updatedUser.setPrenom(user.getEmail());
+	updatedUser.setActif(user.isActif());
 	userService.save(updatedUser);
 	return "updated";
 	}
@@ -58,7 +61,8 @@ public class UserController {
 	public String deleteUser(@PathVariable Long id) {
 		
 		 userService.delete(id);
-		return "delete succ" ;
+
+		 return "Deleted success";
 		 
 	}
 	

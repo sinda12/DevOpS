@@ -3,46 +3,46 @@ package com.bookstore.bookstore;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
+import java.util.Optional;
 
+import com.bookstore.bookstore.service.EmployeeService;
+import com.bookstore.bookstore.serviceImp.EmployeeServiceImp;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 
-import com.bookstore.bookstore.model.Profile;
-import com.bookstore.bookstore.repository.UserRepository;
-import com.bookstore.bookstore.service.UserService;
-import com.bookstore.bookstore.serviceImp.UserServiceImpl;
+import com.bookstore.bookstore.model.Employee;
+import com.bookstore.bookstore.repository.EmployeeRepository;
+
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
-public class UserTest {
+public class EmployeeTest {
 	@Autowired
-	private UserRepository repos;
-	
+	private EmployeeRepository repos;
+
 	@Test
 	@Rollback(false)
 	public void createListUser() {
-		Profile us = new Profile("mala","lklk","koko","dee","15151");
-		Profile pr = repos.save(us);
+		Employee us = new Employee("mala","lklk","koko@gmail.com",true);
+		Employee pr = repos.save(us);
 		assertNotNull(pr);
 	}
 	@Test
 	public void getListUser() {
-		List<Profile> task = (List<Profile>) repos.findAll();
+		List<Employee> task = (List<Employee>) repos.findAll();
 		Assertions.assertThat(task.size()).isGreaterThan(0);
 	}
-	@Test 
+	@Test
 	public void testFindUserById() {
-		String name = "lklk";
-	    Profile user = repos.findByName(name);
-	    Assertions.assertThat(user.getName()).isEqualTo(name);
+		String name = "mala";
+		Employee user = repos.findByNom(name);
+	    Assertions.assertThat(user.getNom()).isEqualTo(name);
 	}
-	
 	
 	
 }
